@@ -1,10 +1,32 @@
-// components/StationPanel.tsx
-export const StationPanel = ({ station, onClose }) => {
+interface Station {
+  name: string;
+  image: string;
+  description: string;
+}
+
+interface StationPanelProps {
+  station: Station | null; // Handle null in case no station is selected
+  onClose: () => void;
+}
+
+export const StationPanel = ({ station, onClose }: StationPanelProps) => {
+  // Logic Fix: Don't render anything if there's no station selected
+  if (!station) return null;
+
   return (
     <div className="absolute left-6 top-6 bottom-6 w-96 bg-white rounded-2xl shadow-2xl z-[1000] p-6 overflow-y-auto border border-gray-100">
-      <button onClick={onClose} className="absolute right-4 top-4 text-gray-400 text-xl">×</button>
+      <button 
+        onClick={onClose} 
+        className="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-2xl"
+      >
+        &times;
+      </button>
       
-      <img src={station.image} className="w-full h-48 object-cover rounded-xl mb-4" alt="Station" />
+      <img 
+        src={station.image} 
+        className="w-full h-48 object-cover rounded-xl mb-4" 
+        alt={station.name} 
+      />
       
       <div className="mb-4">
         <h3 className="text-xl font-bold text-gray-900">{station.name}</h3>
@@ -25,7 +47,9 @@ export const StationPanel = ({ station, onClose }) => {
 
       <div className="border-t pt-4">
         <h4 className="font-semibold text-gray-900 mb-2">About</h4>
-        <p className="text-sm text-gray-600 leading-relaxed">{station.description}</p>
+        <p className="text-sm text-gray-600 leading-relaxed">
+          {station.description}
+        </p>
       </div>
     </div>
   );
